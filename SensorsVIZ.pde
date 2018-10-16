@@ -1,15 +1,15 @@
 PFont myFont;
 
-boolean run = false;
-
 PImage BG;
 boolean showBG = true;
-boolean surfaceMode = true;
 
 // PROJECTION 3D MODEL
 WarpSurface surface;
-//Canvas canvas;
+// Canvas canvas;
 PGraphics canvas;
+
+// Roadnetwork
+Lanes roadnetwork;
 
 // SIMULACIÓ FONS DE VALL
 int simWidth = 1000;
@@ -26,8 +26,6 @@ PVector[] roi = new PVector[] {
     new PVector(42.496164, 1.515728)
 };
 
-final PVector point = new PVector(42.505086, 1.509961);
-PVector pointCorrected;
 
 void setup() {
     fullScreen(P2D,1);
@@ -43,7 +41,7 @@ void setup() {
     surface.loadConfig();
     canvas = new Canvas(this, simWidth, simHeight, bounds, roi);
     
-    pointCorrected = toXY(point);
+    roadnetwork = new Lanes("roads.geojson", simWidth, simHeight, bounds);
 }
 
 
@@ -54,12 +52,10 @@ void draw() {
     canvas.beginDraw();
     canvas.background(255);
     if(showBG)canvas.image(BG, 0, 0);
-    canvas.fill(#ff0000);
-    canvas.ellipse(pointCorrected.x, pointCorrected.y, 10, 10);
+    roadnetwork.draw(canvas, 1, #c0c0c0);
     canvas.endDraw();
     
-    //surface.draw((Canvas)canvas);
-    image(canvas, 0 ,0);
+    surface.draw((Canvas)canvas);
 }
 
 
@@ -73,15 +69,5 @@ void keyPressed() {
         case 'w':
             surface.toggleCalibration();
             break;
-    }
-    
-}
-
-
-
-PVector toXY(PVector coords) {
-    return new PVector(
-        map(coords.y, bounds[0].y, bounds[1].y, 0, simWidth),
-        map(coords.x, bounds[0].x, bounds[1].x, simHeight, 0)
-    );
+    } 
 }

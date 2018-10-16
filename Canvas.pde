@@ -1,4 +1,3 @@
-
 /**
 * Extend graphic and rendering context to draw, by adding a Region Of Interest that is drawn into an
 * irregular surface
