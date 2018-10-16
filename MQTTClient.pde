@@ -94,7 +94,7 @@ public class MQTTClient {
               @Override
               public void connectionLost(Throwable cause) {
                   try {
-                    client.connect();
+                    connect();
                   } catch (Exception e) {
                     println(e);
                   }
