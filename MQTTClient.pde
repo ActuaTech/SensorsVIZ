@@ -1,3 +1,5 @@
+import java.util.Observable;
+
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -11,13 +13,14 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
  * @modified      Guillem Francisco
  * @version       0.1
  */
-public class MQTTClient {
+public class MQTTClient extends Observable{
   
       private MqttClient client;
       private MqttConnectOptions conn = new MqttConnectOptions();
       private MemoryPersistence persistence = new MemoryPersistence();
       
       private String clientID = MqttClient.generateClientId();
+      private PVector position;
     
     
       /**
@@ -81,6 +84,11 @@ public class MQTTClient {
       public boolean getStatus() {
           return client.isConnected();
       }
+      
+      
+      public PVector getPosition(){
+          return position;
+      }
     
     
       /**
@@ -102,7 +110,9 @@ public class MQTTClient {
       
               @Override
               public void messageArrived(String topic, MqttMessage message) throws Exception {
-                  println(message);   //For the moment we just print the message. TODO: If this class becomes an Obserbable then notify Observers.
+                  JSONObject payload = JSONObject.parse(new String(message.getPayload()));
+                  setChanged();
+                  notifyObservers(payload);
               }
       
               @Override

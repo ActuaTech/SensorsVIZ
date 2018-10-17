@@ -26,6 +26,15 @@ PVector[] roi = new PVector[] {
     new PVector(42.496164, 1.515728)
 };
 
+// MQTT configuration
+String broker = "ssl://eu.thethings.network:8883";
+String user = "*******";
+String password = "ttn-account-v2.<someCharacters>";
+String topic = "whatever";
+
+MQTTClient client;
+
+
 
 void setup() {
     fullScreen(P2D,1);
@@ -42,13 +51,19 @@ void setup() {
     canvas = new Canvas(this, simWidth, simHeight, bounds, roi);
     
     roadnetwork = new Lanes("roads.geojson", simWidth, simHeight, bounds);
+    
+    client = new MQTTClient(broker, user, password);
+    client.connect();
+    client.setCallback();
+    client.subscribe(topic);
+
 }
 
 
 void draw() {
     
     background(255);
-    
+
     canvas.beginDraw();
     canvas.background(255);
     if(showBG)canvas.image(BG, 0, 0);

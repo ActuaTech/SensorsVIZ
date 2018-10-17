@@ -121,7 +121,7 @@ public class Lanes {
 * @modified  Guillem Francisco
 * @version   0.1
 */
-public class Lane {
+protected class Lane {
       
       private final int ID;
       private final String NAME;
