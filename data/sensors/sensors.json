@@ -1,0 +1,6 @@
+{ "sensors": [
+    {"deviceID" : "FirstDevice", "variables" :["lat", "long", "temp", "humidity"]},
+    {"deviceID" : "SecondDevice", "variables" :["lat", "long", "co2"]},
+    {"deviceID" : "ThirdDevice", "variables" :["lat", "long", "noise"]}
+  ]
+}
