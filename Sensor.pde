@@ -36,7 +36,7 @@ public class Sensors {
               String[] vrbls = {};
               
               for (int j = 0; j < variables.size(); j++){
-                  vrbls = append(vrbls, variables.getString(i));
+                  vrbls = append(vrbls, variables.getString(j));
               }
               
               Sensor newSensor = new Sensor(id, vrbls);
@@ -46,8 +46,6 @@ public class Sensors {
           }
       }
 }
-
-
 
 
 
