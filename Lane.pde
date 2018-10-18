@@ -41,24 +41,6 @@ public class Lanes {
       
       
       /**
-      * Transform from polar coordinates of lon to X of the canvas
-      * @param lon 
-      */
-      public float toX(float lon) {
-          return map(lon, BOUNDS[0].y, BOUNDS[1].y, 0, W);
-      }
-      
-      
-      /**
-      * Transform from polar coordinates of lat to Y of the canvas
-      * @param lat
-      */
-      public float toY(float lat) {
-          return map(lat, BOUNDS[0].x, BOUNDS[1].x, H, 0);
-      }
-      
-      
-      /**
       * Create all the roadnetwork from a geoJSON file
       * @param file  geoJSOn file with the roadnetwork
       */

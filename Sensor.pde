@@ -138,8 +138,11 @@ public abstract class Sensor implements Observer{
 */
 public class GPSTempHum extends Sensor {
   
+      PVector position;
+      
       float rad = random(0, 20);
       boolean decreasing = true;
+      
   
   
       /**
@@ -169,10 +172,11 @@ public class GPSTempHum extends Sensor {
               String[] dictKeys = variablesValues.keyArray();
               for(int i = 0; i< dictKeys.length; i++){
                   float value = payloadFields.getFloat(dictKeys[i]);
-                  if(dictKeys[i].equals("lat")) value = roadnetwork.toY(value);
-                  if(dictKeys[i].equals("lon")) value = roadnetwork.toX(value);
                   variablesValues.set(dictKeys[i], value);
               }
+              
+              position = roadnetwork.toXY(variablesValues.get("lat"),variablesValues.get("lon"));
+              position = roadnetwork.findClosestPoint(position);
           }
       }
       
@@ -187,9 +191,9 @@ public class GPSTempHum extends Sensor {
           
           canvas.noStroke();
           canvas.fill(c);
-          canvas.ellipse(variablesValues.get("lon"),variablesValues.get("lat"), size, size);
+          canvas.ellipse(position.x, position.y, size, size);
           canvas.fill(c, 100);
-          canvas.ellipse(variablesValues.get("lon"),variablesValues.get("lat"), rad, rad);
+          canvas.ellipse(position.x, position.y, rad, rad);
           
           if(decreasing) rad = rad - 0.1;
           if(!decreasing) rad = rad + 0.1;
