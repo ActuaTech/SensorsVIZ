@@ -32,7 +32,7 @@ public class Lanes {
       * @param lat
       * @param lon 
       */
-      private PVector toXY(float lat, float lon) {
+      public PVector toXY(float lat, float lon) {
           return new PVector(
               map(lon, BOUNDS[0].y, BOUNDS[1].y, 0, W),
               map(lat, BOUNDS[0].x, BOUNDS[1].x, H, 0)
@@ -77,8 +77,6 @@ public class Lanes {
       * @return closest point position in lane 
       */
       public PVector findClosestPoint(PVector position) {
-          PVector positionCorrected = toXY(position.x, position.y);
-          
           Float minDistance = Float.NaN;
           PVector closestPoint = null;
           
@@ -86,7 +84,7 @@ public class Lanes {
               ArrayList<PVector> vertices = lane.getVertices();
               
               for (int i = 1; i < vertices.size(); i++){
-                  PVector projectedPoint = Geometry.scalarProjection(positionCorrected, vertices.get(i-1), vertices.get(i));
+                  PVector projectedPoint = Geometry.scalarProjection(position, vertices.get(i-1), vertices.get(i));
                   float distance = PVector.dist(position, projectedPoint);
                   
                   if (minDistance.isNaN() || distance < minDistance){
@@ -123,7 +121,7 @@ public class Lanes {
 * @modified  Guillem Francisco
 * @version   0.1
 */
-public class Lane {
+protected class Lane {
       
       private final int ID;
       private final String NAME;

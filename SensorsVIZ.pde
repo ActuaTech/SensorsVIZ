@@ -3,18 +3,26 @@ PFont myFont;
 PImage BG;
 boolean showBG = true;
 
-// PROJECTION 3D MODEL
+// 3D Model projection
 WarpSurface surface;
+
 // Canvas canvas;
-PGraphics canvas;
+Canvas canvas;
 
 // Roadnetwork
 Lanes roadnetwork;
 
-// SIMULACIÓ FONS DE VALL
+// MQTT client
+MQTTClient client;
+
+// Sensors facade;
+Sensors sensors;
+
+
+// Canvas and Surface configuration
 int simWidth = 1000;
 int simHeight = 847;
-final String bgPath = "orto_small.jpg";
+final String bgPath = "bg/orto_small.jpg";
 final PVector[] bounds = new PVector[] {
     new PVector(42.482119, 1.489794),
     new PVector(42.533768, 1.572122)
@@ -27,8 +35,21 @@ PVector[] roi = new PVector[] {
 };
 
 
+// Roadnetwork configuration
+String roadnetworkPath = "roads/roads.geojson";
+
+// MQTT configuration
+String broker = "ssl://eu.thethings.network:8883";
+String user = "****";
+String password = "ttn-account-v2.*******";
+String topic = "******";
+
+// Sensors configuration
+String sensorsPath = "sensors/sensors.json";
+
+
 void setup() {
-    fullScreen(P2D,1);
+    size(1400, 800, P2D);
     smooth();
     
     myFont = createFont("Montserrat-Light", 32);
@@ -41,18 +62,27 @@ void setup() {
     surface.loadConfig();
     canvas = new Canvas(this, simWidth, simHeight, bounds, roi);
     
-    roadnetwork = new Lanes("roads.geojson", simWidth, simHeight, bounds);
+    roadnetwork = new Lanes(roadnetworkPath, simWidth, simHeight, bounds);
+    
+    client = new MQTTClient(broker, user, password);
+    client.connect();
+    client.setCallback();
+    client.subscribe(topic);
+    
+    sensors = new Sensors(sensorsPath, client, roadnetwork);
+
 }
 
 
 void draw() {
     
     background(255);
-    
+
     canvas.beginDraw();
     canvas.background(255);
     if(showBG)canvas.image(BG, 0, 0);
     roadnetwork.draw(canvas, 1, #c0c0c0);
+    sensors.draw(canvas, 6, #ff0000);
     canvas.endDraw();
     
     surface.draw((Canvas)canvas);

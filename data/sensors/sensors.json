@@ -1,0 +1,4 @@
+{ "sensors": [
+    {"deviceID" : "first-demo", "type": "GPSTempHum" ,"variables" :["lat", "lon", "temp", "hum"]}
+  ]
+}
