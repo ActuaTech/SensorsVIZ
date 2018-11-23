@@ -141,8 +141,8 @@ public class GPSTempHum extends Sensor {
       PVector position;
       
       float rad = random(0, 20);
+      float maxSize = 14;
       boolean decreasing = true;
-      
   
   
       /**
@@ -187,17 +187,15 @@ public class GPSTempHum extends Sensor {
       * @param size  Size of the solid point
       * @param c  Color of the point
       */
-      public void draw(Canvas canvas, int size , color c){
+      public void draw(Canvas canvas, int minSize , color c){
           
           canvas.noStroke();
           canvas.fill(c);
-          canvas.ellipse(position.x, position.y, size, size);
+          canvas.ellipse(position.x, position.y, minSize, minSize);
           canvas.fill(c, 100);
           canvas.ellipse(position.x, position.y, rad, rad);
           
-          if(decreasing) rad = rad - 0.1;
-          if(!decreasing) rad = rad + 0.1;
-          if(rad < size) decreasing = false;
-          if(rad > 14) decreasing = true;
+          rad = decreasing ? rad - 0.1 : rad + 0.1;
+          decreasing = rad < minSize ? false : rad > maxSize ? true : false;
       }
 }
